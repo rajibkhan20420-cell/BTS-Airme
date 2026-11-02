@@ -2,6 +2,111 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B.T.S. Airme</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#10111a;color:white;font-family:Arial,sans-serif}
+header{background:#191b2b;padding:18px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:bold;color:#ff3155}
+button{border:0;padding:12px 20px;border-radius:10px;background:#ff3155;color:white;font-weight:bold;cursor:pointer}
+main{padding:22px;max-width:650px;margin:auto}
+.hero{background:linear-gradient(135deg,#7028ff,#e52d62);padding:30px 20px;border-radius:20px;margin:20px 0;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{margin-bottom:20px;line-height:1.6}
+.card{background:#1d2030;padding:22px;border-radius:16px;margin:15px 0}
+.card h2{margin-bottom:10px}
+.card p{color:#bbb;line-height:1.6}
+nav{position:fixed;bottom:0;left:0;right:0;background:#191b2b;display:flex;justify-content:space-around;padding:15px 5px}
+nav button{background:transparent;padding:5px;font-size:13px}
+input{width:100%;padding:13px;border-radius:9px;border:1px solid #555;background:#292c3b;color:white;margin:8px 0}
+footer{text-align:center;color:#888;padding:35px 10px 90px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">B.T.S. Airme 🚀</div>
+<button onclick="showPage('login')">Login</button>
+</header>
+
+<main>
+<section id="home">
+<div class="hero">
+<h1>Welcome to B.T.S. Airme</h1>
+<p>ভিডিও তৈরি করুন, শেয়ার করুন এবং AI-এর সাহায্যে নতুন কনটেন্ট তৈরি করুন।</p>
+<button onclick="showPage('videos')">Get Started</button>
+</div>
+
+<div class="card">
+<h2>🎥 Video Feed</h2>
+<p>তোমার পছন্দের ভিডিও দেখার জায়গা।</p>
+<button onclick="showPage('videos')">ভিডিও দেখুন</button>
+</div>
+
+<div class="card">
+<h2>🤖 AI Tools</h2>
+<p>AI দিয়ে নতুন কনটেন্ট তৈরির সুবিধা।</p>
+<button onclick="showPage('ai')">AI Tools খুলুন</button>
+</div>
+</section>
+
+<section id="videos" hidden>
+<div class="card">
+<h2>🎥 Video Feed</h2>
+<p>এখানে ভবিষ্যতে ভিডিও আপলোড ও দেখার ব্যবস্থা যুক্ত হবে।</p>
+</div>
+</section>
+
+<section id="ai" hidden>
+<div class="card">
+<h2>🤖 AI Studio</h2>
+<p>তোমার ভিডিওর জন্য একটি আইডিয়া লেখো:</p>
+<input id="idea" placeholder="তোমার ভিডিওর বিষয় লিখো">
+<button onclick="makeIdea()">আইডিয়া তৈরি</button>
+<p id="result"></p>
+</div>
+</section>
+
+<section id="login" hidden>
+<div class="card">
+<h2>👤 Login / Signup</h2>
+<input placeholder="তোমার নাম">
+<input type="email" placeholder="ইমেইল">
+<input type="password" placeholder="পাসওয়ার্ড">
+<p>এটি আপাতত ডিজাইন ডেমো। নিরাপদ অ্যাকাউন্ট ব্যবস্থা পরে যুক্ত হবে।</p>
+</div>
+</section>
+</main>
+
+<nav>
+<button onclick="showPage('home')">🏠 Home</button>
+<button onclick="showPage('videos')">🎥 Videos</button>
+<button onclick="showPage('ai')">🤖 AI</button>
+<button onclick="showPage('login')">👤 Profile</button>
+</nav>
+
+<footer>B.T.S. Airme © 2026</footer>
+
+<script>
+function showPage(id){
+document.querySelectorAll('main section').forEach(s=>s.hidden=true);
+document.getElementById(id).hidden=false;
+window.scrollTo(0,0);
+}
+function makeIdea(){
+let idea=document.getElementById('idea').value;
+document.getElementById('result').innerText=idea
+?'তোমার ভিডিও আইডিয়া: '+idea+'। এবার এর জন্য একটি সুন্দর স্ক্রিপ্ট তৈরি করো!'
+:'আগে একটি বিষয় লিখো।';
+}
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>B.T.S. Airme</title>
