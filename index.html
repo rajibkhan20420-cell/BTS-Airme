@@ -1,1 +1,261 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>B.T.S. Airme</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:#fff;font-family:Arial,sans-serif;padding-bottom:75px}
+header{background:#17243a;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
+header h2{margin:0;color:#55d6ff}
+button{background:#08a9dc;color:#fff;border:0;padding:11px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
+main{max-width:750px;margin:auto;padding:15px}
+.page{display:none}
+.page.active{display:block}
+.hero{background:linear-gradient(140deg,#173b5b,#29215a);padding:35px 18px;text-align:center;border-radius:18px;margin-bottom:18px}
+.hero h1{font-size:29px}
+.card{background:#1b2940;border:1px solid #34445f;padding:18px;border-radius:14px;margin:15px 0}
+.card h2{color:#55d6ff}
+input,textarea{width:100%;padding:13px;margin:8px 0;background:#101827;color:#fff;border:1px solid #52647e;border-radius:8px}
+textarea{min-height:90px;resize:vertical}
+video{width:100%;max-height:350px;border-radius:10px;background:#000;margin-top:10px}
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:#17243a;display:flex;justify-content:space-around;padding:8px 2px;border-top:1px solid #34445f;z-index:10}
+.bottom-nav button{background:transparent;padding:10px 5px;font-size:12px}
+.bottom-nav button.selected{color:#55d6ff}
+.message{color:#55d6ff}
+.small{color:#aab6c8;font-size:13px}
+.post-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.post-actions button{font-size:12px}
+footer{text-align:center;color:#aab6c8;padding:20px}
+</style>
+</head>
+<body>
+
+<header>
+<h2>B.T.S. Airme 🚀</h2>
+<button onclick="showPage('profile')">Login</button>
+</header>
+
+<main>
+
+<section id="home" class="page active">
+<div class="hero">
+<h1>Welcome to B.T.S. Airme</h1>
+<p>ভিডিও তৈরি করুন, শেয়ার করুন এবং AI-এর সাহায্যে নতুন কনটেন্ট তৈরি করুন।</p>
+<button onclick="showPage('videos')">Get Started</button>
+</div>
+<div class="card">
+<h2>🎥 Video Feed</h2>
+<p>তোমার পছন্দের ভিডিও দেখো এবং নিজের ভিডিও যোগ করো।</p>
+<button onclick="showPage('feed')">ভিডিও দেখুন</button>
+</div>
+<div class="card">
+<h2>🤖 AI Studio</h2>
+<p>ভিডিওর জন্য নতুন আইডিয়া তৈরি করো।</p>
+<button onclick="showPage('ai')">AI Studio খুলুন</button>
+</div>
+<div class="card">
+<h2>👤 Your Profile</h2>
+<p>নিজের প্রোফাইল দেখতে এখানে যাও।</p>
+<button onclick="showPage('profile')">Profile খুলুন</button>
+</div>
+</section>
+
+<section id="videos" class="page">
+<h1>🎬 Video Studio</h1>
+<div class="card">
+<h2>ভিডিও নির্বাচন করো</h2>
+<p>মোবাইল থেকে ভিডিও বেছে নিয়ে প্রিভিউ দেখো।</p>
+<input type="file" id="videoFile" accept="video/*">
+<video id="videoPreview" controls hidden></video>
+<p id="videoMessage" class="message"></p>
+</div>
+<div class="card">
+<h2>ভিডিওর ক্যাপশন</h2>
+<textarea id="caption" placeholder="ভিডিও সম্পর্কে কিছু লিখো"></textarea>
+<button onclick="publishVideo()">Feed-এ যোগ করো</button>
+<p class="small">এই ডেমোতে ভিডিওটি শুধু এই ব্রাউজারের বর্তমান সেশনে দেখা যাবে।</p>
+</div>
+</section>
+
+<section id="feed" class="page">
+<h1>🎥 Video Feed</h1>
+<div id="feedList">
+<div class="card">
+<h2>স্বাগতম B.T.S. Airme-তে!</h2>
+<p>এখানে তোমার ভিডিও পোস্ট দেখা যাবে।</p>
+</div>
+</div>
+</section>
+
+<section id="ai" class="page">
+<h1>🤖 AI Studio</h1>
+<div class="card">
+<h2>Video Idea Generator</h2>
+<p>কী বিষয়ে ভিডিও বানাতে চাও?</p>
+<input id="topic" placeholder="যেমন: গ্রামের জীবন">
+<button onclick="makeIdea()">আইডিয়া তৈরি করো</button>
+<p id="ideaResult" class="message"></p>
+</div>
+<div class="card">
+<h2>ভিডিও স্ক্রিপ্ট আইডিয়া</h2>
+<textarea id="scriptTopic" placeholder="ভিডিওর বিষয় লিখো"></textarea>
+<button onclick="makeScript()">স্ক্রিপ্ট তৈরি করো</button>
+<p id="scriptResult" class="message"></p>
+</div>
+</section>
+
+<section id="profile" class="page">
+<h1>👤 Account</h1>
+<div class="card">
+<h2>Login / Signup Demo</h2>
+<input id="userName" placeholder="তোমার নাম">
+<input id="userEmail" type="email" placeholder="ইমেইল">
+<input id="userPassword" type="password" placeholder="পাসওয়ার্ড">
+<button onclick="demoLogin()">Continue</button>
+<p id="loginMessage" class="message"></p>
+<p class="small">এটি ডেমো। এখনো আসল অ্যাকাউন্ট বা নিরাপদ লগইন ব্যবস্থা যুক্ত হয়নি।</p>
+</div>
+<div class="card">
+<h2>About B.T.S. Airme</h2>
+<p>একটি AI-powered video sharing platform তৈরির প্রাথমিক সংস্করণ।</p>
+</div>
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+<button class="selected" data-page="home" onclick="showPage('home')">🏠 Home</button>
+<button data-page="videos" onclick="showPage('videos')">🎬 Create</button>
+<button data-page="feed" onclick="showPage('feed')">🎥 Feed</button>
+<button data-page="ai" onclick="showPage('ai')">🤖 AI</button>
+<button data-page="profile" onclick="showPage('profile')">👤 Profile</button>
+</nav>
+
+<footer>B.T.S. Airme © 2026</footer>
+
+<script>
+let selectedVideoURL = null;
+let postCount = 0;
+
+function showPage(pageId){
+ document.querySelectorAll('.page').forEach(function(page){
+  page.classList.remove('active');
+ });
+ const page = document.getElementById(pageId);
+ if(page) page.classList.add('active');
+
+ document.querySelectorAll('.bottom-nav button').forEach(function(button){
+  button.classList.toggle('selected',button.dataset.page===pageId);
+ });
+ window.scrollTo(0,0);
+}
+
+document.getElementById('videoFile').addEventListener('change',function(event){
+ const file=event.target.files[0];
+ const preview=document.getElementById('videoPreview');
+ const message=document.getElementById('videoMessage');
+ if(!file)return;
+ if(selectedVideoURL)URL.revokeObjectURL(selectedVideoURL);
+ selectedVideoURL=URL.createObjectURL(file);
+ preview.src=selectedVideoURL;
+ preview.hidden=false;
+ message.textContent='ভিডিও প্রস্তুত। Play চাপ দিয়ে দেখো।';
+});
+
+function publishVideo(){
+ const caption=document.getElementById('caption').value.trim();
+ if(!selectedVideoURL){
+  alert('আগে একটি ভিডিও নির্বাচন করো।');
+  return;
+ }
+ const card=document.createElement('div');
+ card.className='card';
+
+ const title=document.createElement('h2');
+ title.textContent='🎬 Video Post';
+ const video=document.createElement('video');
+ video.src=selectedVideoURL;
+ video.controls=true;
+ video.playsInline=true;
+ const text=document.createElement('p');
+ text.textContent=caption||'আমার নতুন ভিডিও!';
+ const actions=document.createElement('div');
+ actions.className='post-actions';
+
+ const like=document.createElement('button');
+ like.textContent='❤️ Like 0';
+ let likes=0;
+ like.onclick=function(){
+  likes++;
+  like.textContent='❤️ Like '+likes;
+ };
+
+ const comment=document.createElement('button');
+ comment.textContent='💬 Comment';
+ comment.onclick=function(){
+  const value=prompt('তোমার মন্তব্য লিখো');
+  if(value){
+   const item=document.createElement('p');
+   item.textContent='💬 '+value;
+   card.appendChild(item);
+  }
+ };
+
+ const share=document.createElement('button');
+ share.textContent='↗ Share';
+ share.onclick=function(){
+  if(navigator.share){
+   navigator.share({title:'B.T.S. Airme',text:caption||'আমার ভিডিও'});
+  }else{
+   alert('তোমার ব্রাউজারে Share সুবিধা পাওয়া যাচ্ছে না।');
+  }
+ };
+
+ actions.append(like,comment,share);
+ card.append(title,video,text,actions);
+ document.getElementById('feedList').prepend(card);
+ postCount++;
+ document.getElementById('caption').value='';
+ document.getElementById('videoMessage').textContent='ভিডিও Feed-এ যোগ হয়েছে!';
+ showPage('feed');
+}
+
+function makeIdea(){
+ const topic=document.getElementById('topic').value.trim();
+ const result=document.getElementById('ideaResult');
+ if(!topic){
+  result.textContent='আগে ভিডিওর বিষয় লিখো।';
+  return;
+ }
+ result.textContent='আইডিয়া: '+topic+' নিয়ে ৩০ সেকেন্ডের ভিডিও বানাও। শুরুতে আকর্ষণীয় দৃশ্য, মাঝখানে গল্প এবং শেষে সুন্দর বার্তা রাখো।';
+}
+
+function makeScript(){
+ const topic=document.getElementById('scriptTopic').value.trim();
+ const result=document.getElementById('scriptResult');
+ if(!topic){
+  result.textContent='আগে ভিডিওর বিষয় লিখো।';
+  return;
+ }
+ result.textContent='শুরু: '+topic+' নিয়ে একটি প্রশ্ন দিয়ে শুরু করো। মাঝখান: বিষয়টি সহজভাবে ব্যাখ্যা করো। শেষ: দর্শকদের মতামত জানতে চাও।';
+}
+
+function demoLogin(){
+ const name=document.getElementById('userName').value.trim();
+ const email=document.getElementById('userEmail').value.trim();
+ const password=document.getElementById('userPassword').value;
+ const message=document.getElementById('loginMessage');
+ if(!name||!email||!password){
+  message.textContent='সব ঘর পূরণ করো।';
+  return;
+ }
+ message.textContent='স্বাগতম, '+name+'! এটি শুধু ডেমো লগইন। আসল অ্যাকাউন্ট তৈরি হয়নি।';
+}
+</script>
+</body>
+</html>
+
