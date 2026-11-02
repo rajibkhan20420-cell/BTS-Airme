@@ -1,1 +1,371 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B.T.S. Airme</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #10111a;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding-bottom: 85px;
+}
+
+header {
+  background: #191b2b;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  color: #ff3155;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: #ff3155;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+main {
+  max-width: 650px;
+  margin: auto;
+  padding: 18px;
+}
+
+.hero {
+  background: linear-gradient(135deg,#7028ff,#e52d62);
+  padding: 32px 20px;
+  border-radius: 20px;
+  text-align: center;
+  margin: 15px 0 22px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.card {
+  background: #1d2030;
+  padding: 22px;
+  border-radius: 16px;
+  margin: 15px 0;
+}
+
+.card h2 {
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #bbb;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 9px;
+  border: 1px solid #555;
+  background: #292c3b;
+  color: white;
+  margin: 10px 0;
+}
+
+video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+  background: black;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #191b2b;
+  display: flex;
+  justify-content: space-around;
+  padding: 13px 4px;
+  z-index: 20;
+}
+
+nav button {
+  background: transparent;
+  padding: 8px 5px;
+  font-size: 12px;
+}
+
+nav button.active {
+  color: #ff3155;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.result {
+  color: #ffb6c4;
+  line-height: 1.7;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  padding: 25px 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">B.T.S. Airme 🚀</div>
+  <button onclick="showPage('profile')">Login</button>
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+
+  <div class="hero">
+    <h1>Welcome to B.T.S. Airme</h1>
+    <p>
+      ভিডিও তৈরি করুন, শেয়ার করুন এবং
+      AI-এর সাহায্যে নতুন কনটেন্ট তৈরি করুন।
+    </p>
+    <button onclick="showPage('videos')">
+      Get Started
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>🎥 Video Feed</h2>
+    <p>তোমার পছন্দের ভিডিও দেখো এবং নিজের ভিডিও যোগ করো।</p>
+    <button onclick="showPage('videos')">ভিডিও দেখুন</button>
+  </div>
+
+  <div class="card">
+    <h2>🤖 AI Studio</h2>
+    <p>ভিডিওর জন্য নতুন আইডিয়া তৈরি করো।</p>
+    <button onclick="showPage('ai')">AI Studio খুলুন</button>
+  </div>
+
+</section>
+
+<!-- VIDEO PAGE -->
+<section id="videos" class="page">
+
+  <div class="card">
+    <h2>🎥 Video Studio</h2>
+    <p>মোবাইল থেকে একটি ভিডিও নির্বাচন করো।</p>
+
+    <input
+      type="file"
+      id="videoFile"
+      accept="video/*"
+      onchange="previewVideo(event)"
+    >
+
+    <div id="videoPreview"></div>
+  </div>
+
+  <div class="card">
+    <h2>📺 Video Feed</h2>
+    <p id="feedMessage">
+      এখনো কোনো ভিডিও যোগ করা হয়নি।
+    </p>
+  </div>
+
+</section>
+
+<!-- AI PAGE -->
+<section id="ai" class="page">
+
+  <div class="card">
+    <h2>🤖 AI Video Idea Generator</h2>
+
+    <p>তোমার ভিডিওর বিষয় লিখো:</p>
+
+    <input
+      type="text"
+      id="idea"
+      placeholder="যেমন: বাংলাদেশের সৌন্দর্য"
+    >
+
+    <button onclick="makeIdea()">
+      আইডিয়া তৈরি করো
+    </button>
+
+    <div class="result" id="ideaResult"></div>
+  </div>
+
+</section>
+
+<!-- PROFILE PAGE -->
+<section id="profile" class="page">
+
+  <div class="card">
+    <h2>👤 Login / Signup</h2>
+
+    <input
+      type="text"
+      id="userName"
+      placeholder="তোমার নাম"
+    >
+
+    <input
+      type="email"
+      id="userEmail"
+      placeholder="তোমার ইমেইল"
+    >
+
+    <input
+      type="password"
+      id="userPassword"
+      placeholder="পাসওয়ার্ড"
+    >
+
+    <button onclick="demoLogin()">
+      Continue
+    </button>
+
+    <p id="loginMessage" class="result">
+      এটি আপাতত ডিজাইন ডেমো।
+      আসল অ্যাকাউন্ট ব্যবস্থা পরে যুক্ত হবে।
+    </p>
+  </div>
+
+</section>
+
+</main>
+
+<!-- BOTTOM MENU -->
+<nav>
+  <button id="nav-home" class="active"
+    onclick="showPage('home')">🏠 Home</button>
+
+  <button id="nav-videos"
+    onclick="showPage('videos')">🎥 Videos</button>
+
+  <button id="nav-ai"
+    onclick="showPage('ai')">🤖 AI</button>
+
+  <button id="nav-profile"
+    onclick="showPage('profile')">👤 Profile</button>
+</nav>
+
+<footer>
+  B.T.S. Airme © 2026
+</footer>
+
+<script>
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('nav button').forEach(button => {
+    button.classList.remove('active');
+  });
+
+  document.getElementById('nav-' + id).classList.add('active');
+
+  window.scrollTo(0, 0);
+}
+
+function makeIdea() {
+  const idea = document.getElementById('idea').value.trim();
+  const result = document.getElementById('ideaResult');
+
+  if (!idea) {
+    result.innerText = 'আগে ভিডিওর বিষয় লিখো।';
+    return;
+  }
+
+  result.innerText =
+    '🎬 ভিডিওর বিষয়: ' + idea +
+    '\n\n📌 ভিডিওর শুরু: বিষয়টি সুন্দরভাবে পরিচয় করিয়ে দাও।' +
+    '\n\n📌 মাঝের অংশ: বিষয়টি নিয়ে গুরুত্বপূর্ণ তথ্য ও দৃশ্য দেখাও।' +
+    '\n\n📌 শেষ: দর্শকদের লাইক ও শেয়ার করতে বলো।' +
+    '\n\nএটি একটি নমুনা আইডিয়া।';
+}
+
+function previewVideo(event) {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith('video/')) {
+    alert('একটি ভিডিও ফাইল নির্বাচন করো।');
+    return;
+  }
+
+  const videoURL = URL.createObjectURL(file);
+
+  document.getElementById('videoPreview').innerHTML =
+    '<video controls src="' + videoURL + '"></video>' +
+    '<p class="result">ভিডিও প্রিভিউ তৈরি হয়েছে।</p>';
+
+  document.getElementById('feedMessage').innerText =
+    'তোমার নির্বাচিত ভিডিওটি এখানে প্রিভিউ হচ্ছে।';
+}
+
+function demoLogin() {
+  const name = document.getElementById('userName').value.trim();
+  const email = document.getElementById('userEmail').value.trim();
+  const password = document.getElementById('userPassword').value;
+
+  const message = document.getElementById('loginMessage');
+
+  if (!name || !email || !password) {
+    message.innerText = 'সব ঘর পূরণ করো।';
+    return;
+  }
+
+  message.innerText =
+    'স্বাগতম, ' + name + '! এটি শুধু ডেমো। আসল Login এখনো চালু হয়নি।';
+}
+
+</script>
+
+</body>
+</html>
+
